@@ -20,5 +20,5 @@ class Robot(object):
         self.qdd = qdd
 
     def uppack(self):
-        return (self._inertia, self._mass, self._lengths, self._centroid)
+        return self._inertia, self._mass, self._lengths, self._centroid
 
