@@ -3,7 +3,7 @@
 class Robot(object):
     def __init__(self):
         self._inertia = [[1, 1, 1], [1, 1, 1], [1, 1, 1]] # Ix Iy Iz
-        self._m = [1, 1, 1]
+        self._mass = [1, 1, 1]
         self._lengths = [1, 1, 1]
         self._centroid = [ 0.5,0.5,0.5]
         self.q = [0,0,0]
@@ -18,4 +18,7 @@ class Robot(object):
 
     def update_qdd(self,qdd):
         self.qdd = qdd
+
+    def uppack(self):
+        return (self._inertia, self._mass, self._lengths, self._centroid)
 
