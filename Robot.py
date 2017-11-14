@@ -1,6 +1,7 @@
 
 
 class Robot(object):
+    # TODO add dosctrings to functions
     def __init__(self):
         self._inertia = [[1, 1, 1], [1, 1, 1], [1, 1, 1]] # Ix Iy Iz
         self._mass = [1, 1, 1]
@@ -9,6 +10,7 @@ class Robot(object):
         self.q = [0,0,0]
         self.qd = [ 0,0,0]
         self.qdd = [0, 0, 0]
+        self.tau = [0,0,0]
 
     def update_q(self,q):
         self.q = q
@@ -18,6 +20,9 @@ class Robot(object):
 
     def update_qdd(self,qdd):
         self.qdd = qdd
+
+    def update_tau(self, tau):
+        self.tau = tau
 
     def uppack(self):
         return self._inertia, self._mass, self._lengths, self._centroid
