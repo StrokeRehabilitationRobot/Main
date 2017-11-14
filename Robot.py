@@ -24,6 +24,18 @@ class Robot(object):
     def update_tau(self, tau):
         self.tau = tau
 
+    def update(self, state):
+        # TODO create function to parse numpy array
+        pass
+    def encoders_to_angles(self):
+        # TODO create function to convert the tick to angles
+        pass
+
+    # TODO figure out what to do with the load cells to get real data
+
+
     def uppack(self):
         return self._inertia, self._mass, self._lengths, self._centroid
+
+
 
