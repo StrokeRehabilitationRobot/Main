@@ -29,19 +29,24 @@ class Robot(object):
         # TODO figure out how to get qdd
 
         for i in xrange(3):
-            self.q[i ] = self.encoders_to_angles(state[i * 3 + 0 + 1])
-            self.qd[i] = self.encoders_to_angles(state[i * 3 + 2 + 1])
+            self.q[i ] = self.encoder_to_angle(state[i * 3 + 0 + 1])
+            self.qd[i] = self.encoder_to_angle(state[i * 3 + 2 + 1])
             self.tau[i] = state[i * 3 + 2 + 1]
 
         self.q[2] = self.q[2] - 0.5*pi
 
         pass
-    def encoders_to_angles(self,ticks):
+    def encoder_to_angle(self,ticks):
         # TODO create function to convert the tick to angles
-        return ticks*(1/11.44)*(2*pi/360)
+        return ticks* ((1/11.44)*(2*pi/360))
         pass
 
     # TODO figure out what to do with the load cells to get real data
+
+    def angle_to_encoder(self,angle):
+        # TODO create function to convert the tick to angles
+        return angle / ((1/11.44)*(2*pi/360))
+        pass
 
 
     def unpack(self):
