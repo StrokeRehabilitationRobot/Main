@@ -1,5 +1,6 @@
 
-
+import numpy as np
+from math import pi
 class Robot(object):
     # TODO add dosctrings to functions
     def __init__(self):
@@ -28,13 +29,16 @@ class Robot(object):
         # TODO figure out how to get qdd
 
         for i in xrange(3):
-            self.q[i * 3 + 0 ] =state[i * 3 + 0 + 1]
-            self.qd[i * 3 + 1] = state[i * 3 + 2 + 1]
-            self.tau[i * 3 + 2] = state[i * 3 + 2 + 1]
+            self.q[i ] = self.encoders_to_angles(state[i * 3 + 0 + 1])
+            self.qd[i] = self.encoders_to_angles(state[i * 3 + 2 + 1])
+            self.tau[i] = state[i * 3 + 2 + 1]
+
+        self.q[2] = self.q[2] - 0.5*pi
 
         pass
-    def encoders_to_angles(self):
+    def encoders_to_angles(self,ticks):
         # TODO create function to convert the tick to angles
+        return ticks*(1/11.44)*(2*pi/360)
         pass
 
     # TODO figure out what to do with the load cells to get real data
