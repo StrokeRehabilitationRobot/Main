@@ -25,7 +25,13 @@ class Robot(object):
         self.tau = tau
 
     def update(self, state):
-        # TODO create function to parse numpy array
+        # TODO figure out how to get qdd
+
+        for i in xrange(3):
+            self.q[i * 3 + 0 ] =state[i * 3 + 0 + 1]
+            self.qd[i * 3 + 1] = state[i * 3 + 2 + 1]
+            self.tau[i * 3 + 2] = state[i * 3 + 2 + 1]
+
         pass
     def encoders_to_angles(self):
         # TODO create function to convert the tick to angles
