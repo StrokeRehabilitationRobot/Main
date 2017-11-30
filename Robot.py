@@ -4,14 +4,18 @@ from math import pi
 class Robot(object):
     # TODO add dosctrings to functions
     def __init__(self):
-        self._inertia = [[1, 1, 1], [1, 1, 1], [1, 1, 1]] # Ix Iy Iz
-        self._mass = [1, 1, 1]
-        self._lengths = [1, 1, 1]
-        self._centroid = [ 0.5,0.5,0.5]
+        self._inertia = [[0.006757, 0.0006036, 0.0015514],
+                         [0.001745, 0.0005596, 0.00006455],
+                         [0.00706657, 0.0006254, 0.0015708]
+                        ]
+        self._mass = [1.01992, 0.3519, 0.22772]
+        self._lengths = [0.25107, 0.191, 0.37843]
+        self._centroid =  [0.10424, 0.14550, 0.203]
         self.q = [0,0,0]
         self.qd = [ 0,0,0]
         self.qdd = [0, 0, 0]
         self.tau = [0,0,0]
+        self._convert_factor = ((1/11.44)*(2*pi/360))
 
     def update_q(self,q):
         self.q = q
@@ -33,19 +37,19 @@ class Robot(object):
             self.qd[i] = self.encoder_to_angle(state[i * 3 + 2 + 1])
             self.tau[i] = state[i * 3 + 2 + 1]
 
-        self.q[2] = self.q[2] - 0.5*pi
+        self.q[2] -= 0.5 * pi
 
         pass
     def encoder_to_angle(self,ticks):
         # TODO create function to convert the tick to angles
-        return ticks* ((1/11.44)*(2*pi/360))
+        return ticks * self._convert_factor
         pass
 
     # TODO figure out what to do with the load cells to get real data
 
     def angle_to_encoder(self,angle):
         # TODO create function to convert the tick to angles
-        return angle / ((1/11.44)*(2*pi/360))
+        return angle / self._convert_factor
         pass
 
 
