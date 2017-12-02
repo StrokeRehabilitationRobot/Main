@@ -38,7 +38,9 @@ class PlotArm(object):
 
 
         self.ax.relim()
-        self.ax.autoscale_view()
+        self.ax.set_xlim(-1, 1)
+        self.ax.set_ylim(-1, 1)
+        self.ax.set_zlim(0, 1)
 
         # We need to draw *and* flush
         self.figure.canvas.draw()
