@@ -16,6 +16,7 @@ class Robot(object):
         self.qdd = [0, 0, 0]
         self.tau = [0,0,0]
         self._convert_factor = ((1/11.44)*(2*pi/360))
+        self._torque_offset = [0,0,0]
 
     def update_q(self,q):
         self.q = q
@@ -35,7 +36,7 @@ class Robot(object):
         for i in xrange(3):
             self.q[i ] = self.encoder_to_angle(state[i * 3 + 0 + 1])
             self.qd[i] = self.encoder_to_angle(state[i * 3 + 2 + 1])
-            self.tau[i] = state[i * 3 + 2 + 1]
+            self.tau[i] = 50*state[i * 3 + 2 + 1] + self._torque_offset[i]
 
         self.q[2] -= 0.5 * pi
 
