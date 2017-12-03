@@ -16,7 +16,7 @@ class Robot(object):
         self.qdd = [0, 0, 0]
         self.tau = [0,0,0]
         self._convert_factor = ((1/11.44)*(2*pi/360))
-        self._torque_offset = [0,0,0]
+        self._torque_offset = [0.002930,0.454701,0.457143]
 
     def update_q(self,q):
         self.q = q
