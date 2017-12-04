@@ -17,6 +17,7 @@ class Robot(object):
         self.tau = [0,0,0]
         self._convert_factor = ((1/11.44)*(2*pi/360))
         self._torque_offset = [0.44420,0.5081,0.489]
+        self.min_tau = [0,0,0]
 
     def update_q(self,q):
         self.q = q
@@ -36,7 +37,7 @@ class Robot(object):
         for i in xrange(3):
             self.q[i ] = self.encoder_to_angle(state[i * 3 + 0 + 1])
             self.qd[i] = self.encoder_to_angle(state[i * 3 + 2 + 1])
-            self.tau[i] = state[i * 3 + 2 + 1]
+            self.tau[i] = filter_tau(Interpolate_tau(state[i * 3 + 2 + 1],i),i)
 
         self.q[2] -= 0.5 * pi
 
@@ -56,6 +57,16 @@ class Robot(object):
 
     def unpack(self):
         return self._inertia, self._mass, self._lengths, self._centroid
+
+    def Interpolate_tau(self,updated_tau,i):
+        return 10*updated_tau - self._torque_offset[i]
+
+    def filter_tau(self,interpolated_tau,i):
+        if interpolated_tau < 1.2*min_tau[i]:
+            return 0
+        else:
+            return interpolated_tau
+
 
 
 
