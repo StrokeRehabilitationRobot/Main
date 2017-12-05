@@ -17,8 +17,8 @@ class Robot(object):
         self.tau = [0,0,0]
         self._convert_factor = ((1/11.44)*(2*pi/360))
         self._torque_offset = [0.5646,0.5084,0.5128]
-        self._max_tau = [0.6,0.55,0.6]
-        self._min_tau = [.45, .40,.3 ]
+        self._max_tau = [0.6,0.55,0.55]
+        self._min_tau = [.45, .40,.4 ]
 
     def update_q(self,q):
         self.q = q
@@ -64,12 +64,10 @@ class Robot(object):
     def filter_tau(self,interpolated_tau,i):
 
         if interpolated_tau > self._max_tau[i]:
-            return interpolated_tau
+            return 1
         elif interpolated_tau < self._min_tau[i]:
-            return interpolated_tau
+            return -1
         else:
-            return interpolated_tau
-
-
+            return 0
 
 

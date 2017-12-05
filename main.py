@@ -29,6 +29,7 @@ sin_range = 400;
 count = 0
 while(1):
     count +=1
+
     pidConstants = [0.001, 0.0005, .01, 0.002, 0.00025, 0.01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0, ];
     upstream = udp.send_packet(PID_CONFIG, pidConstants)
     # for k in xrange(sinWaveInc):
@@ -40,13 +41,15 @@ while(1):
     #         packet[(j * 3) + 2] = 3
     i = 0
     packet[0] = robot.angle_to_encoder(0)
-    packet[3] = robot.angle_to_encoder(0.5*math.pi)
-    packet[6] = robot.angle_to_encoder(0.5*math.pi)
+    packet[3] = robot.angle_to_encoder(0)
+    packet[6] = robot.angle_to_encoder(0)
 
-    packet[i+2] = 0
+    packet[8] = -3
+
     upstream =  udp.send_packet(37,packet)
     robot.update(upstream)
     print robot.tau
+
     ploter.update(*Dynamics.fk(robot))
     #print robot.q
 
