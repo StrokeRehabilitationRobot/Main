@@ -6,7 +6,7 @@ from Dynamics import Dynamics
 import time
 
 
-robot = Robot.Robot()
+robot = Robot.Robot("arm1")
 ploter = PlotArm.PlotArm()
 
 VEL_CONTROL = 48
@@ -44,7 +44,7 @@ while(1):
     packet[3] = robot.angle_to_encoder(0)
     packet[6] = robot.angle_to_encoder(0)
 
-    packet[8] = -3
+
 
     upstream =  udp.send_packet(37,packet)
     robot.update(upstream)
