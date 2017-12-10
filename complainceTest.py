@@ -22,20 +22,18 @@ PID_CONFIG = 65
 udp = UDP(9876)
 
 packet = 15 * [0, 0, 0]
-sinWaveInc = 10;
-sin_range = 400;
-count = 0
-Kv = np.matrix([[.5, 0, 0], [0, -.5, 0], [0, 0, -.5]])
-Kl = np.matrix([[5, 0, 0], [0, -20, 0], [0, 0, -5]])
+
+Kv = np.matrix([[5, 0, 0], [0, -5, 0], [0, 0, -10]])
+Kl = np.matrix([[25, 0, 0], [0, -10, 0], [0, 0, -50]])
 controller = GravityCompensationController.GravityCompensationController(Kl, Kv)
 u = [0.0, 0.0, 0.0]
-pidConstants = [.0001, 0.0005, 0.001, 0, 0.00025, 0.01, 0.0002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0]
+pidConstants = [.0001, 0.0005, 0.001, 0.0001, 0.00025, 0.01, 0.0002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0]
 upstream = udp.send_packet(PID_CONFIG, pidConstants)
 time0 = time.clock()
 while (1):
 
 
-    count += 1
+
     i = 0
     robot.update(upstream)
     u = controller.getTorque(robot)
@@ -44,11 +42,14 @@ while (1):
     packet[3] = robot.angle_to_encoder(robot.qd[1]*dt + robot.q[1])
     packet[6] = robot.angle_to_encoder(robot.qd[2]*dt + robot.q[2] + 0.5 * math.pi)
 
+
+
+
     packet[2] = u[0]
     packet[5] = u[1]
     packet[8] = u[2]
-
-    packet[9] = game.update(robot)
+    pos0, pos1, pos2 = Dynamics.fk(robot)
+    packet[9] = game.update(pos2[0])
     time0 = time.clock()
     upstream = udp.send_packet(37, packet)
 
