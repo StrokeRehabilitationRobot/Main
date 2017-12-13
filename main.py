@@ -29,6 +29,7 @@ sin_range = 400;
 count = 0
 pidConstants = [0.001, 0.0005, .01, 0.002, 0.00025, 0.01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
 udp.send_packet(PID_CONFIG, pidConstants)
+
 while(1):
     count +=1
 
@@ -39,11 +40,11 @@ while(1):
     packet[6] = robot.angle_to_encoder(0)
 
     packet[9] = 0
-
+    time0 = time.clock()
     upstream =  udp.send_packet(37,packet)
+    print (time.clock()-time0)*1000
     robot.update(upstream)
-    print robot.tau
-
+    #print robot.tau
     ploter.update(*Dynamics.fk(robot))
     #print robot.q
 

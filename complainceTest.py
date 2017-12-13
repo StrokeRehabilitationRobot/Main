@@ -49,7 +49,7 @@ while (1):
     packet[5] = u[1]
     packet[8] = u[2]
     pos0, pos1, pos2 = Dynamics.fk(robot)
-    packet[9] = game.update(pos2[0])
+    packet[9] = game.update(pos2[1])
     time0 = time.clock()
     upstream = udp.send_packet(37, packet)
 
