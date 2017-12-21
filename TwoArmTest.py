@@ -9,9 +9,9 @@ from Haptic_Controller import GravityCompensationController
 
 import time
 
-thanos = Robot.Robot("thanos")
-helena = Robot.Robot("helena")
-
+thanos = Robot.Robot("thanos",id=0)
+helena = Robot.Robot("helena",id=1)
+ploter = PlotArm.PlotArm()
 
 udp = UDP(9876)
 
@@ -23,39 +23,42 @@ STATUS = 38
 TORQUE_CONTROL = 39
 
 
+pidConstants = [0.001, 0.0005, .01, 0.002, 0.00025, 0.01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
+udp.send_packet(0,PID_CONFIG, pidConstants)
+udp.send_packet(1,PID_CONFIG, pidConstants)
 
 
-packet = 15 * [0, 0, 0]
-def remap(val, OldMin, OldMax, ):
-    NewMin = 0
-    NewMax = 0.25
-    OldRange = (OldMax - OldMin)
-    NewRange = (NewMax - NewMin)
-    NewValue = (((val - OldMin) * NewRange) / OldRange) + NewMin
-    return abs(round(NewValue, 2))
+packet = 15 * [0.0, 0.0, 0.0]
 
 
 def move(inc):
-    packet[0] = helper.angle_to_encoder(0)
+    packet[0] = helper.angle_to_encoder(math.pi*inc)
     packet[3] = helper.angle_to_encoder(0)
-    packet[6] = helper.angle_to_encoder(inc * 3.14)
+    packet[6] = helper.angle_to_encoder(0.5*math.pi)
 
-    upstream = udp.send_packet(thanos._id, PID_CONTROL, packet)
+    upstream = udp.send_packet(helena._id, PID_CONTROL, packet)
+    helena.update(upstream)
+    ploter.update(*Dynamics.fk(helena))
+    print "desired: " + str(packet)
+    print "angle: " + str(helena.q[0])
+    print "angle: " + str(helena.q[1])
+    print "angle: " + str(helena.q[2])
+    msg = helper.make_packet([helena.q[0],0,helena.q[2]], [0,0,0], [0,0,0])
+    print "msg: " + str(msg)
+
+    upstream = udp.send_packet(thanos._id, PID_CONTROL,msg)
     thanos.update(upstream)
 
-    msg = helper.make_packet(thanos.q, thanos.qd, thanos.tau)
-    upstream = udp.send_packet(helena._id, PID_CONTROL, msg)
-    helena.update(upstream)
 
 
 #move the arm in a wave
 while (1):
 
 
-    for i in np.linspace(0, 1, num=50):
+    for i in np.linspace(0, 0.5, num=100):
         move(i)
 
-    for i in np.linspace(1, 0, num=50):
+    for i in np.linspace(0.5, 0, num=100):
         move(i)
 
 

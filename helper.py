@@ -30,6 +30,8 @@ def make_packet(q,qd,tau):
     packet = 15*[0.0]
 
     for i in xrange(3):
-        packet[i] = angle_to_encoder(q[i])
-        packet[i+1] = angle_to_encoder(qd[i])
-        packet[i+2] = tau[i]
+        packet[3*i] = angle_to_encoder(q[i])
+        packet[3*i+1] = qd[i]
+        packet[3*i+2] = tau[i]
+    packet[6]+= angle_to_encoder(0.5*pi)
+    return packet
