@@ -5,7 +5,7 @@ import PlotArm
 from Dynamics import Dynamics
 import numpy as np
 from Haptic_Controller import GravityCompensationController
-
+import helper
 import time
 
 robot = Robot.Robot("arm1")
@@ -19,16 +19,11 @@ STATUS = 38
 TORQUE_CONTROL = 39
 
 udp = UDP(9876)
-baseConstants = [0.001, 0.0002, 0.01];
-shoulderConstants = [0.002, 0.00025, 0.01];
-elbowConstants = [0.002, 0.0004, 0.01];
 
 packet = 15 * [0, 0, 0]
-sinWaveInc = 10;
-sin_range = 400;
-count = 0
+
 pidConstants = [0.001, 0.0005, .01, 0.002, 0.00025, 0.01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
-udp.send_packet(PID_CONFIG, pidConstants)
+udp.send_packet(0,PID_CONFIG, pidConstants)
 Kv = np.matrix([[.5, 0, 0], [0, -5, 0], [0, 0, -1]])
 Kl = np.matrix([[1, 0, 0], [0, -10, 0], [0, 0, -50]])
 controller = GravityCompensationController.GravityCompensationController(Kl, Kv)
@@ -42,26 +37,20 @@ def remap(val, OldMin, OldMax, ):
     NewValue = (((val - OldMin) * NewRange) / OldRange) + NewMin
     return abs(round(NewValue, 2))
 
-
 while (1):
-    count += 1
-
+    packet = 15 * [0, 0, 0]
     u = controller.getTorque(robot)
-    #print "link 1: " + str(u[1])
-    #print "link 1: " + str(u[2])
-    packet[0] = robot.angle_to_encoder(0)
-    packet[3] = robot.angle_to_encoder(0)
-    packet[6] = robot.angle_to_encoder(0.5*3.14)
 
-    packet[2] = 0
-
+    packet[0] = helper.angle_to_encoder(0)
+    packet[3] = helper.angle_to_encoder(0)
+    packet[6] = helper.angle_to_encoder(0.5*3.14)
     packet[5] = remap(0.5*u[1], 0.001, 0.97)
     packet[8] = remap(0.25*u[2], 0.001, 0.45)
     packet[9] = 0
     print "link 1 remap: " + str(packet[5])
     print "link 2 remap: " + str(packet[8])
 
-    upstream = udp.send_packet(TORQUE_CONTROL, packet)
+    upstream = udp.send_packet(1,TORQUE_CONTROL, packet)
     print upstream
     robot.update(upstream)
     # print robot.tau
