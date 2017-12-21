@@ -28,21 +28,13 @@ k = np.matrix([[0, 0, 0], [0, 0.04, 0], [0, 0, 0.005]])
 controller = GravityCompensationController.GravityCompensationController(k)
 
 
-def remap(val, OldMin, OldMax, ):
-    NewMin = 0
-    NewMax = 2.5
-    OldRange = (OldMax - OldMin)
-    NewRange = (NewMax - NewMin)
-    NewValue = (((val - OldMin) * NewRange) / OldRange) + NewMin
-    return abs(round(NewValue, 2))
-
 while (1):
     packet = 15 * [0.0]
-    u = controller.getTorque(robot)
+    u = helper.remap(controller.getTorque(robot))
     print "link 1 raw: " + str(u[1])
     print "link 2 raw: " + str(u[2])
-    packet[5] = remap(.04*u[1], 0.001, 0.97)
-    packet[8] = remap(.005*u[2], 0.001, 0.45)
+    packet[5] = u[1]
+    packet[8] = u[2]
     packet[9] = 0
     print "link 1 remap: " + str(packet[5])
     print "link 2 remap: " + str(packet[8])

@@ -1,4 +1,5 @@
 from math import pi
+import numpy as np
 
 
 def encoder_to_angle(ticks):
@@ -14,7 +15,7 @@ def angle_to_encoder(angle):
     """
 
     :param angle: angle of servo
-    :return: encoder ticks
+    :return: encoder ticks(
     """
     convert_factor = ((1 / 11.44) * (2 * pi / 360))  # converts from tick->rads
     return angle / convert_factor
@@ -35,3 +36,18 @@ def make_packet(q,qd,tau):
         packet[3*i+2] = tau[i]
     packet[6]+= angle_to_encoder(0.5*pi)
     return packet
+
+
+def remap(u):
+    """
+    :param u: raw control
+    :return: normilized control
+    """
+    tau = [0,0,0]
+    newRange    = [ 0.0  , 2.50 ]
+    j1_oldRange = [ 0.001, 0.97 ]
+    j2_oldRange = [ 0.001, 0.45 ]
+
+    tau[1] = np.interp(u[1], j1_oldRange, newRange)
+    tau[2] = np.interp(u[2], j2_oldRange, newRange)
+    return  tau
