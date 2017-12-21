@@ -62,8 +62,8 @@ class Robot(object):
         """
 
         for i in xrange(3):
-            self.q[i ] = helper.encoder_to_angle(state[i * 3 + 0 + 1])
-            self.qd[i] = helper.encoder_to_angle(state[i * 3 + 2 + 1])
+            self.q[i ] = round( helper.encoder_to_angle(state[i * 3 + 0 + 1]), 2)
+            self.qd[i] = round( helper.encoder_to_angle(state[i * 3 + 2 + 1]),2)
             self.tau[i] = self.filter_tau(self.interpolate_tau(state[i * 3 + 2 + 1],i),i)
 
         self.q[2] -= 0.5 * pi
