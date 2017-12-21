@@ -1,6 +1,7 @@
 
 import numpy as np
 from math import pi
+import helper
 
 
 class Robot(object):
@@ -10,6 +11,7 @@ class Robot(object):
     def __init__(self,arm="thanos",id=0):
         """
 
+        :type id: arm id
         :param arm: which arm do you want
         :param id: id of the arm
         """
@@ -20,7 +22,6 @@ class Robot(object):
             self.arm2()
 
         self._id = id
-
 
         self._inertia = [[0.006757, 0.0006036, 0.0015514],
                          [0.001745, 0.0005596, 0.00006455],
@@ -61,30 +62,13 @@ class Robot(object):
         """
 
         for i in xrange(3):
-            self.q[i ] = self.encoder_to_angle(state[i * 3 + 0 + 1])
-            self.qd[i] = self.encoder_to_angle(state[i * 3 + 2 + 1])
+            self.q[i ] = helper.encoder_to_angle(state[i * 3 + 0 + 1])
+            self.qd[i] = helper.encoder_to_angle(state[i * 3 + 2 + 1])
             self.tau[i] = self.filter_tau(self.interpolate_tau(state[i * 3 + 2 + 1],i),i)
 
         self.q[2] -= 0.5 * pi
 
-    def encoder_to_angle(self,ticks):
-        """
-
-        :param ticks: encoder ticks
-        :return: angle of servo
-        """
-        return ticks * self._convert_factor
-        pass
-
-
-    def angle_to_encoder(self,angle):
-        """
-
-        :param angle: angle of servo
-        :return: encoder ticks
-        """
-        return angle / self._convert_factor
-
+    @property
     def unpack(self):
         """
 
