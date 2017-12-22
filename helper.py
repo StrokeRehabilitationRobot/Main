@@ -47,7 +47,7 @@ def remap(u):
     newRange    = [ 0.0  , 2.50 ]
     j1_oldRange = [ 0.001, 0.97 ]
     j2_oldRange = [ 0.001, 0.45 ]
-    tau[0] = u[0]
+    tau[0] = u[0]#np.interp(u[0], [ -.4,.6   ], [ -2.5, 2.5 ])
     tau[1] = np.interp(u[1], j1_oldRange, newRange)
     tau[2] = np.interp(u[2], j2_oldRange, newRange)
     return  tau

@@ -1,6 +1,5 @@
-
-import numpy as np
 from math import pi
+
 import helper
 
 
@@ -89,7 +88,6 @@ class Robot(object):
         return updated_tau#10*updated_tau - 10*self._torque_offset[i]
 
     def filter_tau(self,interpolated_tau,i):
-        print "link " + str(i) + " " + str(interpolated_tau)
         # TODO figure out analog way of interpring torque
         if interpolated_tau > self._max_tau[i]:
             return 1
