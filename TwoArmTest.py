@@ -25,7 +25,9 @@ TORQUE_CONTROL = 39
 
 pidConstants = [0.001, 0.0005, .01, 0.002, 0.00025, 0.01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
 udp.send_packet(0,PID_CONFIG, pidConstants)
+pidConstants =[0.001, 0.0005, .01, 1000, 0.00025, .001, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
 udp.send_packet(1,PID_CONFIG, pidConstants)
+
 
 
 packet = 15 * [0.0, 0.0, 0.0]
@@ -55,10 +57,10 @@ def move(inc):
 while (1):
 
 
-    for i in np.linspace(0, 0.5, num=100):
+    for i in np.linspace(0, 0.25, num=50):
         move(i)
 
-    for i in np.linspace(0.5, 0, num=100):
+    for i in np.linspace(0.25, 0, num=50):
         move(i)
 
 
