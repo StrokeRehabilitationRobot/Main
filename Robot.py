@@ -15,6 +15,8 @@ class Robot(object):
         :param arm: which arm do you want
         :param id: id of the arm
         """
+        self._name = arm
+
         if arm == "thanos":
             self.arm1()
 
@@ -83,10 +85,11 @@ class Robot(object):
         :param updated_tau:
         :param i:
         :return:
-        """
+        """     
         return updated_tau#10*updated_tau - 10*self._torque_offset[i]
 
     def filter_tau(self,interpolated_tau,i):
+        print "link " + str(i) + " " + str(interpolated_tau)
         # TODO figure out analog way of interpring torque
         if interpolated_tau > self._max_tau[i]:
             return 1
