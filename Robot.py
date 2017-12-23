@@ -69,6 +69,7 @@ class Robot(object):
 
         self.q[2] -= 0.5 * pi
 
+
     @property
     def unpack(self):
         """

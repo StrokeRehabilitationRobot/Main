@@ -35,9 +35,9 @@ Kl = np.matrix([[1, 0, 0], [0, -10, 0], [0, 0, -50]])
 while(1):
 
     #u = controller.getTorque(robot)
-    packet[0] = helper.angle_to_encoder(0.25*math.pi)
+    packet[0] = helper.angle_to_encoder(0)
     packet[3] = helper.angle_to_encoder(0.25*math.pi)
-    packet[6] = helper.angle_to_encoder(0.5*math.pi)
+    packet[6] = helper.angle_to_encoder(0)
 
 
     upstream =  udp.send_packet(0,37,packet)
