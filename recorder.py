@@ -18,6 +18,7 @@ VEL_CONTROL = 48
 VEL_TARGET = 42
 PID_CONTROL = 37
 PID_CONFIG = 65
+REC_LENGTH = 15
 
 udp = UDP(9876)
 baseConstants = [0.001, 0.0002, 0.01]
@@ -33,13 +34,20 @@ Kv = np.matrix([[.5, 0, 0], [0, -5, 0], [0, 0, -1]])
 Kl = np.matrix([[1, 0, 0], [0, -10, 0], [0, 0, -50]])
 #controller = GravityCompensationController.GravityCompensationController(Kl, Kv)
 
+#Get trial info from user
+print("Setting up recording file...")
+name = raw_input("Participant's first name\n")
+task = raw_input("Task name:\n")
 # Set up recording file
-filename = datetime.datetime.now().strftime("recordings/"
-                                            "%j_%H%M_motionrecording.csv")
+filename = datetime.datetime.now().strftime("recordings/" + name + "_" + task + "_%j_%H%M_motionrecording.csv")
 myFile = open(filename, 'w+')
 recorder = csv.writer(myFile)
 
-while(1):
+raw_input("Press Enter to Begin Recording")
+start_time = time.time()
+print("Starting at " + start_time + " and recording for " + REC_LENGTH + " seconds")
+end_time = start_time + REC_LENGTH
+while(time.time() < end_time):
 
     #u = controller.getTorque(robot)
     packet[0] = helper.angle_to_encoder(0)
@@ -54,7 +62,7 @@ while(1):
     ploter.update(*Dynamics.fk(robot))
     #print robot.q
 
-
+print("Recording complete")
 
 
 
