@@ -6,6 +6,8 @@ from Dynamics import Dynamics
 import numpy as np
 from Haptic_Controller import GravityCompensationController
 import helper
+import csv
+import datetime
 import time
 
 
@@ -22,6 +24,7 @@ baseConstants = [0.001, 0.0002, 0.01]
 shoulderConstants = [0.002, 0.00025, 0.01]
 elbowConstants = [0.002, 0.0004, 0.01]
 
+
 packet = 15*[0.0]
 
 pidConstants = [0.001, 0.0005, .01, .001, .0005, .01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
@@ -30,6 +33,11 @@ Kv = np.matrix([[.5, 0, 0], [0, -5, 0], [0, 0, -1]])
 Kl = np.matrix([[1, 0, 0], [0, -10, 0], [0, 0, -50]])
 #controller = GravityCompensationController.GravityCompensationController(Kl, Kv)
 
+# Set up recording file
+filename = datetime.datetime.now().strftime("recordings/"
+                                            "%j_%H%M_motionrecording.csv")
+myFile = open(filename, 'w+')
+recorder = csv.writer(myFile)
 
 while(1):
 
@@ -38,10 +46,11 @@ while(1):
     packet[3] = helper.angle_to_encoder(0.25*math.pi)
     packet[6] = helper.angle_to_encoder(0)
 
-
     upstream =  udp.send_packet(0,37,packet)
     robot.update(upstream)
     print robot.q
+    data_to_record = Dynamics.fk(robot)
+    recorder.writerow(data_to_record[2])
     ploter.update(*Dynamics.fk(robot))
     #print robot.q
 
