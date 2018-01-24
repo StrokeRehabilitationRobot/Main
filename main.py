@@ -26,8 +26,8 @@ packet = 15*[0.0]
 
 pidConstants = [0.001, 0.0005, .01, .001, .0005, .01, 0.002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0];
 udp.send_packet(0,PID_CONFIG, pidConstants)
-Kv = np.matrix([[.5, 0, 0], [0, -5, 0], [0, 0, -1]])
-Kl = np.matrix([[1, 0, 0], [0, -10, 0], [0, 0, -50]])
+Kv = np.matrix([[0, 0, 0], [0, -5, 0], [0, 0, -1]])
+Kl = np.matrix([[0.5, 0, 0], [0, -10, 0], [0, 0, -50]])
 #controller = GravityCompensationController.GravityCompensationController(Kl, Kv)
 
 

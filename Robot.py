@@ -45,7 +45,7 @@ class Robot(object):
         """
         self._torque_offset = [0.5646, 0.5084, 0.5128]
         self._max_tau = [0.6, 0.55, 0.55]
-        self._min_tau = [.45, .40, .4]
+        self._min_tau = [.3, .40, .4]
 
     def arm2(self):
 
@@ -91,9 +91,9 @@ class Robot(object):
     def filter_tau(self,interpolated_tau,i):
         # TODO figure out analog way of interpring torque
         if interpolated_tau > self._max_tau[i]:
-            return 1
-        elif interpolated_tau < self._min_tau[i]:
             return -1
+        elif interpolated_tau < self._min_tau[i]:
+            return 1
         else:
             return 0
 

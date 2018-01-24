@@ -27,7 +27,7 @@ TORQUE_CONTROL = 39
 packet = 15 * [0]
 
 Kv = np.matrix([[5, 0, 0], [0, -5, 0], [0, 0, -10]])
-Kl = np.matrix([[.1, 0, 0], [0, -1, 0], [0, 0, -50]])
+Kl = np.matrix([[0.5, 0, 0], [0, -1, 0], [0, 0, -50]])
 Kg = np.matrix([[0, 0, 0], [0, 1.3, 0], [0, 0, 0.005]])
 controller = CompensationController.CompensationController(Kl, Kv, Kg)
 pidConstants = [.0001, 0.0005, 0.001, 0.0001, 0.00025, 0.01, 0.0002, 0.0004, 0.01, 0, 0, 0, 0, 0, 0]
