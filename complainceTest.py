@@ -39,7 +39,7 @@ while (1):
     if Dynamics.fk(robot)[2][1] < -0.15:
         tau = Dynamics.get_J_tranpose(robot)*np.matrix( [ [-1],[0],[0] ] )
         print tau
-        u[0] = u[0] +tau[0]
+        u[0] = -u[0]
 
     packet[2] = u[0]
     packet[5] = u[1]
